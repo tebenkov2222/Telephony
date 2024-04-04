@@ -14,8 +14,15 @@ public class User
 
     public void Call(string phone)
     {
+        if(State == )
         
-        
+        SettingsUpConnectionStatus connectionStatus = PhoneNetwork.TryConnectToUser(this, phone,out Connection? connection);
+
+        if (connectionStatus != SettingsUpConnectionStatus.Ok)
+        {
+            Console.WriteLine($"Cannot connect to User on SettingsUp by Error {connectionStatus}");
+            return;
+        }
     }
     
     public void SetConnection(Connection connection)
@@ -53,6 +60,7 @@ public class User
         }
     }
 }
+
 
 public enum UserState
 {

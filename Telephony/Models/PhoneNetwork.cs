@@ -2,13 +2,13 @@ using System.Text.RegularExpressions;
 
 namespace Telephony.Models;
 
-public class TelephoneNetwork
+public static class PhoneNetwork
 {
     private const string _patternRegexPhone = @"^\+7\d{10}$";
 
-    private Dictionary<string, User> _usersByPhoneNumber = new();
+    private static Dictionary<string, User> _usersByPhoneNumber = new();
 
-    public RegisterStatus TryRegisterUser(User user)
+    public static RegisterStatus TryRegisterUser(User user)
     {
         if (!Regex.IsMatch(user.PhoneNumber, _patternRegexPhone))
             return RegisterStatus.NumberPhoneWrong;
@@ -19,7 +19,7 @@ public class TelephoneNetwork
         return RegisterStatus.Ok;
     }
 
-    public SettingsUpConnectionStatus TryConnectToUser(User userEntryPoint, string phoneNumber, out Connection? connection)
+    public static SettingsUpConnectionStatus TryConnectToUser(User userEntryPoint, string phoneNumber, out Connection? connection)
     {
         connection = default;
         if (!_usersByPhoneNumber.TryGetValue(phoneNumber, out User endUser))
