@@ -1,16 +1,20 @@
+using System.Collections.Generic;
+
 namespace NewArchitecrute.Physics;
 
 public class World
 {
-    public List<WorldObjectBase> Objects { get; private set; }
+    private List<WorldObjectBase> _objects;
+    public IReadOnlyList<WorldObjectBase> Objects => _objects;
+
 
     public World()
     {
-        Objects = new List<WorldObjectBase>();
+        _objects = new List<WorldObjectBase>();
     }
-
+    
     public void AddObject(WorldObjectBase worldObjectBase)
     {
-        Objects.Add(worldObjectBase);
+        _objects.Add(worldObjectBase);
     }
 }

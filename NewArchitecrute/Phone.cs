@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NewArchitecrute;
 
 public class Phone
@@ -11,6 +13,6 @@ public class Phone
 
 public enum PhoneConnectionState
 {
-    Connected,
+    Enabled,
     Disabled
 }
