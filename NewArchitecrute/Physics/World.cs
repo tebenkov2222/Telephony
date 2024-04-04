@@ -1,20 +1,51 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NewArchitecrute.Physics;
 
-public class World
+public static class World 
 {
-    private List<WorldObjectBase> _objects;
-    public IReadOnlyList<WorldObjectBase> Objects => _objects;
+    private static List<WorldObjectBase> _objects;
+    public static IReadOnlyList<WorldObjectBase> Objects => _objects;
 
 
-    public World()
+    static World()
     {
         _objects = new List<WorldObjectBase>();
     }
     
-    public void AddObject(WorldObjectBase worldObjectBase)
+    public static void AddObject(WorldObjectBase worldObjectBase)
     {
         _objects.Add(worldObjectBase);
+        switch (worldObjectBase)
+        {
+            case PhoneTower phoneTower:
+                phoneTower.TowerStateChanged += OnTowerStateChanged;
+                break;
+        }
+    }
+    
+
+    private static void OnTowerStateChanged(PhoneTower phoneTower, TowerState oldState, TowerState newState)
+    {
+        UpdateWorld();
+    }
+
+    public static List<PhoneTower> GetAvailableTowers()
+    {
+        return _objects.OfType<PhoneTower>().Where(s => s.State == TowerState.Active).ToList();
+    }
+    
+    public static List<Phone> GetPhones()
+    {
+        return _objects.OfType<Phone>().ToList();
+    }
+
+    public static void UpdateWorld()
+    {
+        foreach (Phone phone in GetPhones())
+        {
+            phone.UpdateTowers();
+        }
     }
 }

@@ -2,5 +2,7 @@ namespace NewArchitecrute.Physics;
 
 public abstract class WorldObjectBase
 {
-    public abstract int Position { get; }
+    protected int _position;
+    public int Position => _position;
+    
 }
