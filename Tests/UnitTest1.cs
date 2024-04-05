@@ -12,4 +12,11 @@ public class Tests
     {
         Assert.Pass();
     }
+    
+    
+    [Test]
+    public void FailTest()
+    {
+        Assert.Fail();
+    }
 }
