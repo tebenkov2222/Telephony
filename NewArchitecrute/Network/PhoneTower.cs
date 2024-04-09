@@ -12,15 +12,17 @@ public class PhoneTower : WorldObjectBase
     private int _maxConnectionDistance;
     private TowerState _state;
     private Dictionary<string, Sim> _simsByNumber = new Dictionary<string, Sim>();
-    
+    private PhoneNetwork _phoneNetwork;
+
     public int MaxConnectionDistance => _maxConnectionDistance;
     public TowerState State => _state;
 
     public IReadOnlyDictionary<string, Sim> SimsByNumber => _simsByNumber;
 
 
-    public PhoneTower(int position, int maxConnectionDistance)
+    public PhoneTower(PhoneNetwork phoneNetwork,int position, int maxConnectionDistance)
     {
+        _phoneNetwork = phoneNetwork;
         _position = position;
         _maxConnectionDistance = maxConnectionDistance;
         World.AddObject(this);
@@ -33,7 +35,7 @@ public class PhoneTower : WorldObjectBase
         
         ChangeState(TowerState.Unregistered);
         
-        if (PhoneNetwork.TryRegisterTower(this)) 
+        if (_phoneNetwork.TryRegisterTower(this)) 
             ChangeState(TowerState.Active);
         else
             ChangeState(TowerState.Inacitve);
@@ -65,11 +67,11 @@ public class PhoneTower : WorldObjectBase
     {
         TowerState oldState = State;
         
-        if(oldState == _state)
+        if(oldState == towerState)
             return;
 
         if(oldState == TowerState.Active)
-            PhoneNetwork.UnregisterTower(this);
+            _phoneNetwork.UnregisterTower(this);
         _state = towerState;
 
         TowerStateChanged?.Invoke(this, oldState, State);
@@ -80,7 +82,7 @@ public class PhoneTower : WorldObjectBase
         if (_state != TowerState.Active)
             return DataTransferStatus.NoNetwork;
 
-        return PhoneNetwork.TransmitData(fromNumber, toNumber, data);
+        return _phoneNetwork.TransmitData(fromNumber, toNumber, data);
     }
     
     public DataTransferStatus RecieveData(string fromNumber, string toNumber, DataBase data)

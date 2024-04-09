@@ -2,21 +2,22 @@ using NewArchitecrute.Network.Connection.Messages;
 
 namespace NewArchitecrute;
 
-public static class PhoneNetwork
+public class PhoneNetwork
 {
-    public static PhoneNetworkStatus Status { get; set; }
-    public static DataCenter DataCenter => _dataCenter;
+    public PhoneNetworkStatus Status { get; set; }
+    public DataCenter DataCenter => _dataCenter;
     
-    private static List<PhoneTower> _towers = new List<PhoneTower>();
-    private static Dictionary<string, Sim> _registeredSims = new Dictionary<string, Sim>();
-    private static DataCenter _dataCenter;
+    private List<PhoneTower> _towers = new List<PhoneTower>();
+    private Dictionary<string, Sim> _registeredSims = new Dictionary<string, Sim>();
+    private Dictionary<int, SimOperator> _simOperators = new Dictionary<int, SimOperator>();
+    private DataCenter _dataCenter;
 
-    static PhoneNetwork()
+    public PhoneNetwork()
     {
         _dataCenter = new DataCenter();
     }
 
-    public static bool TryRegisterSim(Sim sim)
+    public bool TryRegisterSim(Sim sim)
     {
         if (Status == PhoneNetworkStatus.Disabled)
             return false;
@@ -27,7 +28,7 @@ public static class PhoneNetwork
         return true;
     }
     
-    public static bool TryRegisterTower(PhoneTower phoneTower)
+    public bool TryRegisterTower(PhoneTower phoneTower)
     {
         if (Status == PhoneNetworkStatus.Disabled)
             return false;
@@ -38,7 +39,7 @@ public static class PhoneNetwork
         return true;
     }
 
-    public static void UnregisterTower(PhoneTower phoneTower)
+    public void UnregisterTower(PhoneTower phoneTower)
     {
         if (Status == PhoneNetworkStatus.Disabled)
             return;
@@ -46,7 +47,7 @@ public static class PhoneNetwork
         _towers.Remove(phoneTower);
     }
     
-    public static DataTransferStatus TransmitData(string fromNumber, string toNumber, DataBase data)
+    public DataTransferStatus TransmitData(string fromNumber, string toNumber, DataBase data)
     {
         if (Status == PhoneNetworkStatus.Disabled)
             return DataTransferStatus.NoNetwork;
@@ -68,5 +69,16 @@ public static class PhoneNetwork
     {
         Enabled,
         Disabled   
+    }
+
+    public bool TryRegisterSimOperator(SimOperator simOperator)
+    {
+        if (Status == PhoneNetworkStatus.Disabled)
+            return false;
+        
+        if (_simOperators.ContainsKey(simOperator.OperatorCode))
+            return false;
+        _simOperators.Add(simOperator.OperatorCode, simOperator);
+        return true;
     }
 }

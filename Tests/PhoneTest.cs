@@ -1,4 +1,5 @@
 using NewArchitecrute;
+using NewArchitecrute.Generator;
 using NewArchitecrute.Network.Connection;
 using NewArchitecrute.Network.Connection.Messages;
 
@@ -14,31 +15,30 @@ public class PhoneTest
     [Test]
     public void Test1()
     {
-        Operator @operator = new Operator();
+        WorldData worldData = God.Instance.CreateWorld1();
 
-        @operator
-            .CreatePhoneTower(-20, 10, out PhoneTower phoneTower1)
-            .CreatePhoneTower( 20, 10, out PhoneTower phoneTower2);
 
-        @operator
-            .CreateSim("+123", 10, out Sim sim1)
-            .CreateSim("+234", 10, out Sim sim2)
-            .CreatePhone(0, [sim1, sim2], out Phone phone);
-        
+        PhoneTower phoneTower1 = worldData.Towers["phoneTower1"];
+        PhoneTower phoneTower2 = worldData.Towers["phoneTower2"];
+
+        Phone phone = worldData.Phones["Phone_Ivan"];
         phone.ChangeState(PhoneState.Enabled);
         Assert.True(phone.Sims.All(s => s.State == SimState.Unregistered));
         
         phone.Move(15);
+        Assert.That(phone.Position, Is.EqualTo(15));
         Assert.True(phone.Sims.All(s => s.State == SimState.Unregistered));
 
         phoneTower2.Enable();
         Assert.True(phone.Sims.All(s => s.State == SimState.Active));
         
         phone.Move(-10);
+        Assert.That(phone.Position, Is.EqualTo(5));
         Assert.True(phone.Sims.All(s => s.State == SimState.Unregistered));
         
         phoneTower1.Enable();
         phone.Move(-20);
+        Assert.That(phone.Position, Is.EqualTo(-15));
         Assert.True(phone.Sims.All(s => s.State == SimState.Active));
         
         Assert.Pass();
@@ -47,37 +47,33 @@ public class PhoneTest
     [Test]
     public void Test2()
     {
-        Operator @operator = new Operator();
-
-        @operator
-            .CreatePhoneTower(-20, 10, out PhoneTower phoneTower1)
-            .CreatePhoneTower( 20, 10, out PhoneTower phoneTower2);
-
-        @operator
-            .CreateSim("+111", 10, out Sim sim1)
-            .CreateSim("+222", 10, out Sim sim2)
-            .CreatePhone(0, [sim1, sim2], out Phone phone1);
+        var worldData = God.Instance.CreateWorld2();
         
-        @operator
-            .CreateSim("+333", 10, out Sim sim3)
-            .CreateSim("+444", 10, out Sim sim4)
-            .CreatePhone(0, [sim3, sim4], out Phone phone2);
+        PhoneTower phoneTower1 = worldData.Towers["phoneTower1"];
+        PhoneTower phoneTower2 = worldData.Towers["phoneTower2"];
         
+        User Ivan = worldData.Users["Ivan"];
+        Phone phone1 = Ivan.Phone;
+        Sim sim1 = phone1.Sims[0];
+        
+        User Vlad = worldData.Users["Vlad"];
+        Phone phone2 = Vlad.Phone;
+        Sim sim3 = phone2.Sims[0];
+
         phoneTower1.Enable();
         phoneTower2.Enable();
         
-        phone1.ChangeState(PhoneState.Enabled);
+        Ivan.ChangeState(User.UserState.Active);
         phone1.Move(15);      
         Assert.True(phone1.Sims.All(s => s.State == SimState.Active));
-
         
-        phone2.ChangeState(PhoneState.Enabled);
+        Vlad.ChangeState(User.UserState.Active);
         phone2.Move(-15);
         Assert.True(phone2.Sims.All(s => s.State == SimState.Active));
 
         string message = "Hello world";
         
-        Journal journalPhone1 = new JournalFactory()
+        Journal journalSim1 = new JournalFactory()
                 .SetPaths(sim1, sim3)
                 .Transmitter
                     .AddMessage(message, DateTime.Now, DataTransferStatus.Done)
@@ -88,48 +84,42 @@ public class PhoneTest
                     .Root
                 .GetResultJournal();
         
-        Journal journalPhone2 = new JournalFactory()
+        Journal journalSim3 = new JournalFactory()
                 .SetPaths(sim1, sim3)
                 .Receiver
                     .AddMessage(message, DateTime.Now, DataTransferStatus.Done)
                     .Root
                 .GetResultJournal();
         
-        phone1.Sims[0].SendSms(sim3.Number, message);
-        phone1.Sims[0].SendSms("+000", message);
+        sim1.SendSms(sim3.Number, message);
+        sim1.SendSms("+000", message);
         
-        CollectionAssert.AreEqual(journalPhone1.JournalDatas, phone1.Sims[0].Journal.JournalDatas);
-        CollectionAssert.AreEqual(journalPhone2.JournalDatas, phone2.Sims[0].Journal.JournalDatas);
+        CollectionAssert.AreEqual(journalSim1.JournalDatas, sim1.Journal.JournalDatas);
+        CollectionAssert.AreEqual(journalSim3.JournalDatas, sim3.Journal.JournalDatas);
         Assert.Pass();
     }
     
     [Test]
     public async Task Test3()
     {
-        Operator @operator = new Operator();
-
-        @operator
-            .CreatePhoneTower(-20, 10, out PhoneTower phoneTower1)
-            .CreatePhoneTower( 20, 10, out PhoneTower phoneTower2);
-
-        @operator
-            .CreateSim("+111", 10, out Sim sim1)
-            .CreateSim("+222", 10, out Sim sim2)
-            .CreatePhone(-15, [sim1, sim2], out Phone phone1);
         
-        @operator
-            .CreateSim("+333", 10, out Sim sim3)
-            .CreateSim("+444", 10, out Sim sim4)
-            .CreatePhone(15, [sim3, sim4], out Phone phone2);
+        var worldData = God.Instance.CreateWorld3();
         
-        phoneTower1.Enable();
-        phoneTower2.Enable();
+        PhoneTower phoneTower1 = worldData.Towers["phoneTower1"];
+        PhoneTower phoneTower2 = worldData.Towers["phoneTower2"];
         
-        phone1.ChangeState(PhoneState.Enabled);
+        User Ivan = worldData.Users["Ivan"];
+        Phone phone1 = Ivan.Phone;
+        Sim sim1 = phone1.Sims[0];
+        
+        User Vlad = worldData.Users["Vlad"];
+        Phone phone2 = Vlad.Phone;
+        Sim sim3 = phone2.Sims[0];
+        
+        Ivan.ChangeState(User.UserState.Active);
         Assert.True(phone1.Sims.All(s => s.State == SimState.Active));
 
-        
-        phone2.ChangeState(PhoneState.Enabled);
+        Vlad.ChangeState(User.UserState.Active);
         Assert.True(phone2.Sims.All(s => s.State == SimState.Active));
         
         Journal journalPhone1 = new JournalFactory()

@@ -54,8 +54,6 @@ public class Sim
         _money = startMoney;
 
         _journal = new Journal();
-        
-        PhoneNetwork.TryRegisterSim(this);
     }
     
     /*public Sim(string number, float startMoney)
@@ -140,7 +138,7 @@ public class Sim
         
         var calculatePrice = _simRate.CalculatePrice(messageData);
         
-        var result = (calculatePrice > Money) ? TransferData(toNumber, messageData) : DataTransferStatus.NoMoney;
+        var result = (Money > calculatePrice) ? TransferData(toNumber, messageData) : DataTransferStatus.NoMoney;
 
         _money -= calculatePrice;
         
@@ -250,6 +248,14 @@ public class Sim
         
         DataReceived?.Invoke(fromNumber, Number, data);
         return DataTransferStatus.Done;
+    }
+
+    public void AddMoney(float moneyAdd)
+    {
+        if(moneyAdd <= 0)
+            return;
+
+        _money += moneyAdd;
     }
 }
 
