@@ -15,7 +15,8 @@ public class Operator
     
     public Operator CreateSim(string number, float startMoney, out Sim sim)
     {
-        sim = new Sim(number, startMoney);
+        throw new Exception();
+        //sim = new Sim(number, startMoney);
         _createdSims.Add(sim);
         return this;
     }

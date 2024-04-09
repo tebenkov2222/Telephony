@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using NewArchitecrute.Network.Connection.Messages;
 using NewArchitecrute.Physics;
 
 namespace NewArchitecrute;
@@ -15,6 +15,8 @@ public class PhoneTower : WorldObjectBase
     
     public int MaxConnectionDistance => _maxConnectionDistance;
     public TowerState State => _state;
+
+    public IReadOnlyDictionary<string, Sim> SimsByNumber => _simsByNumber;
 
 
     public PhoneTower(int position, int maxConnectionDistance)
@@ -61,9 +63,29 @@ public class PhoneTower : WorldObjectBase
     
     private void ChangeState(TowerState towerState)
     {
-        var oldState = State;
+        TowerState oldState = State;
+        
+        if(oldState == _state)
+            return;
+
+        if(oldState == TowerState.Active)
+            PhoneNetwork.UnregisterTower(this);
         _state = towerState;
+
         TowerStateChanged?.Invoke(this, oldState, State);
+    }
+
+    public DataTransferStatus TransmitData(string fromNumber, string toNumber, DataBase data)
+    {
+        if (_state != TowerState.Active)
+            return DataTransferStatus.NoNetwork;
+
+        return PhoneNetwork.TransmitData(fromNumber, toNumber, data);
+    }
+    
+    public DataTransferStatus RecieveData(string fromNumber, string toNumber, DataBase data)
+    {
+        return _simsByNumber[toNumber].ReceiveData(fromNumber, data);
     }
 }
 

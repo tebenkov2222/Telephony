@@ -7,8 +7,7 @@ public static class World
 {
     private static List<WorldObjectBase> _objects;
     public static IReadOnlyList<WorldObjectBase> Objects => _objects;
-
-
+    
     static World()
     {
         _objects = new List<WorldObjectBase>();
