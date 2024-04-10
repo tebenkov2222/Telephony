@@ -1,6 +1,6 @@
 namespace NewArchitecrute.Network.Connection.Messages;
 
-public class DataBase
+public abstract class DataBase
 {
     public DataTransferStatus Status { get; set; }
 }

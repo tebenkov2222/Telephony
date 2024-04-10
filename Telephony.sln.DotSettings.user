@@ -6,6 +6,13 @@
     &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PhoneTest.Test1&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PhoneTest.Test2&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PhoneTest.Test3&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesTest.GodInstance&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest.CellRequestTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest.CellRequestTestProps&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest.CellRequestTestMethods&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest.MessageDataTestProps&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest.MessageDataTestMethods&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::741D9365-455D-49CE-AEF8-29956CC0900F::net8.0::Tests.PropertiesAndMethodsTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fa578d76_002D3f79_002D4e1e_002Dba64_002D8aac33d4d8fb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

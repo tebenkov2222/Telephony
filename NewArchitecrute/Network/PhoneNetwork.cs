@@ -46,7 +46,17 @@ public class PhoneNetwork
         
         _towers.Remove(phoneTower);
     }
-    
+
+    public bool TryRegisterSimOperator(SimOperator simOperator)
+    {
+        if (Status == PhoneNetworkStatus.Disabled)
+            return false;
+        
+        if (!_simOperators.TryAdd(simOperator.OperatorCode, simOperator))
+            return false;
+        return true;
+    }
+
     public DataTransferStatus TransmitData(string fromNumber, string toNumber, DataBase data)
     {
         if (Status == PhoneNetworkStatus.Disabled)
@@ -64,21 +74,10 @@ public class PhoneNetwork
         _dataCenter.RegisterData(fromNumber, toNumber, data, result);
         return result;
     }
-    
+
     public enum PhoneNetworkStatus
     {
         Enabled,
         Disabled   
-    }
-
-    public bool TryRegisterSimOperator(SimOperator simOperator)
-    {
-        if (Status == PhoneNetworkStatus.Disabled)
-            return false;
-        
-        if (_simOperators.ContainsKey(simOperator.OperatorCode))
-            return false;
-        _simOperators.Add(simOperator.OperatorCode, simOperator);
-        return true;
     }
 }

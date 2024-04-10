@@ -70,7 +70,7 @@ public class Journal
 
         protected bool Equals(JournalData other)
         {
-            return From == other.From && To == other.To && Data.Equals(other.Data) && DataType == other.DataType && Status == other.Status;
+            return From == other.From && To == other.To && DataType == other.DataType && Status == other.Status;
         }
 
         public override int GetHashCode()
