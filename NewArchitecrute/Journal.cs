@@ -75,7 +75,7 @@ public class Journal
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(From, To, Data, (int)DataType, (int)Status);
+            return HashCode.Combine(From, To, (int)DataType, (int)Status);
         }
     }
     

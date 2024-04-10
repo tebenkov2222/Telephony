@@ -2,6 +2,7 @@ using NewArchitecrute;
 using NewArchitecrute.Generator;
 using NewArchitecrute.Network.Connection;
 using NewArchitecrute.Network.Connection.Messages;
+using NewArchitecrute.Physics;
 
 namespace Tests;
 
@@ -10,6 +11,8 @@ public class PhoneTest
     [SetUp]
     public void Setup()
     {
+        World.ClearAll();
+
     }
 
     [Test]

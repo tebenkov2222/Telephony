@@ -47,4 +47,9 @@ public static class World
             phone.UpdateTowers();
         }
     }
+
+    public static void ClearAll()
+    {
+        _objects = new List<WorldObjectBase>();
+    }
 }
