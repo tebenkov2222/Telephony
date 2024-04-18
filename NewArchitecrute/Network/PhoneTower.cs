@@ -54,8 +54,7 @@ public class PhoneTower : WorldObjectBase
         if (State != TowerState.Active)
             return false;
         
-        _simsByNumber.Add(sim.Number, sim);
-        return true;
+        return _simsByNumber.TryAdd(sim.Number, sim);
     }
 
     public void Disconnect(Sim sim)
@@ -87,7 +86,11 @@ public class PhoneTower : WorldObjectBase
     
     public DataTransferStatus RecieveData(string fromNumber, string toNumber, DataBase data)
     {
-        return _simsByNumber[toNumber].ReceiveData(fromNumber, data);
+        if (_state != TowerState.Active)
+            return DataTransferStatus.NoNetwork;
+        if (_simsByNumber.TryGetValue(toNumber, out Sim? sim))
+            return sim.ReceiveData(fromNumber, data);
+        return DataTransferStatus.RecipientNotRegistered;
     }
 }
 

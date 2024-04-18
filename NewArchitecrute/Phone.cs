@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using NewArchitecrute.Network.Connection.Messages;
 using NewArchitecrute.Physics;
 
 namespace NewArchitecrute;
@@ -22,31 +18,18 @@ public class Phone : WorldObjectBase, IDisposable
         foreach (Sim sim in _sims)
         {
             sim.Enabled += OnSimEnabled;
-            sim.SmsReceived += SimOnSmsReceived;
-            sim.SmsTransmitted += SimOnSmsTransmitted;
         }
         
         World.AddObject(this);
-    }
-
-    private void SimOnSmsReceived(string from, string to, MessageData data)
-    {
-        
-    }
-
-    private void SimOnSmsTransmitted(string from, string to, MessageData data, DataTransferStatus dataTransferStatus)
-    {
-        
     }
 
     public void Dispose()
     {
         foreach (Sim sim in _sims)
         {
-            sim.SmsReceived -= SimOnSmsReceived;
-            sim.SmsTransmitted -= SimOnSmsTransmitted;
             sim.Enabled -= OnSimEnabled;
         }
+        _sims.Clear();
     }
     
     private void OnSimEnabled(Sim sim)
@@ -100,16 +83,6 @@ public class Phone : WorldObjectBase, IDisposable
             }
         }
     }
-    
-    /*
-    public bool TryCall(string endNumber, Sim selectedSim, out CallConnection? callConnection)
-    {
-        callConnection = default;
-        if (State == PhoneState.Disabled)
-            return false;
-        if (!Sims.Contains(selectedSim))
-            return false;
-    }*/
 }
 
 public enum PhoneState

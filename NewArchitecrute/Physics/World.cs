@@ -15,6 +15,8 @@ public static class World
     
     public static void AddObject(WorldObjectBase worldObjectBase)
     {
+        if(Objects.Contains(worldObjectBase))
+            return;
         _objects.Add(worldObjectBase);
         switch (worldObjectBase)
         {
