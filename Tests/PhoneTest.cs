@@ -16,7 +16,7 @@ public class PhoneTest
     }
 
     [Test]
-    public void Test1()
+    public void Move()
     {
         WorldData worldData = God.Instance.CreateWorld1();
 
@@ -48,7 +48,7 @@ public class PhoneTest
     }
     
     [Test]
-    public void Test2()
+    public void Message()
     {
         var worldData = God.Instance.CreateWorld2();
         
@@ -103,7 +103,7 @@ public class PhoneTest
     }
     
     [Test]
-    public async Task Test3()
+    public async Task Call()
     {
         
         var worldData = God.Instance.CreateWorld3();
